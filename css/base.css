@@ -1,0 +1,270 @@
+/* ============================================================
+   HEALTHPULSE BASE STYLES
+   Reset, global layout, typography, scrollbars
+   ============================================================ */
+
+/* --- CSS Reset --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background Pattern */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(ellipse 800px 600px at 20% 10%, rgba(0, 212, 170, 0.03) 0%, transparent 60%),
+    radial-gradient(ellipse 600px 400px at 80% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 60%),
+    linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-accent-teal);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+a:hover {
+  color: var(--color-accent-teal-light);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* --- Scrollbar Styling --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+/* --- Selection --- */
+::selection {
+  background: rgba(0, 212, 170, 0.3);
+  color: var(--color-text-primary);
+}
+
+/* --- Global Layout --- */
+#app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--gradient-sidebar);
+  border-right: var(--glass-border);
+  z-index: var(--z-sticky);
+  display: flex;
+  flex-direction: column;
+  transition: width var(--transition-slow);
+  overflow: hidden;
+}
+
+#sidebar.collapsed {
+  width: var(--sidebar-width-collapsed);
+}
+
+#main-content {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  min-height: 100vh;
+  transition: margin-left var(--transition-slow);
+  position: relative;
+}
+
+#sidebar.collapsed ~ #main-content {
+  margin-left: var(--sidebar-width-collapsed);
+}
+
+.page-container {
+  padding: var(--content-padding);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.page-container.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Typography Utilities --- */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-md { font-size: var(--font-size-md); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-muted { color: var(--color-text-muted); }
+.text-accent { color: var(--color-accent-teal); }
+.text-danger { color: var(--color-danger); }
+.text-warning { color: var(--color-warning); }
+.text-success { color: var(--color-success); }
+
+.uppercase {
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Page Headers --- */
+.page-header {
+  margin-bottom: var(--space-8);
+}
+
+.page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-2);
+}
+
+.page-subtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  max-width: 680px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  :root {
+    --content-padding: var(--space-6);
+  }
+
+  #sidebar {
+    width: var(--sidebar-width-collapsed);
+  }
+  #main-content {
+    margin-left: var(--sidebar-width-collapsed);
+  }
+  #sidebar .nav-label,
+  #sidebar .sidebar-section-label,
+  #sidebar .sidebar-brand-text {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --content-padding: var(--space-4);
+  }
+
+  #sidebar {
+    transform: translateX(-100%);
+    width: var(--sidebar-width);
+    z-index: var(--z-modal);
+  }
+  #sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  #main-content {
+    margin-left: 0;
+  }
+
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  .page-title {
+    font-size: var(--font-size-2xl);
+  }
+}
