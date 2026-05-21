@@ -60,3 +60,4 @@ stages:
         DockerNamespace: '$(containerRegistry)'
         DockerRepository: '$(imageRepository)'
         DockerImageTag: '$(tag)'
+        PublishProfilePassword: '$(publishProfile.password)'
