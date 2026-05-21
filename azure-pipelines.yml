@@ -57,7 +57,5 @@ stages:
       inputs:
         ConnectionType: 'PublishProfile'
         PublishProfilePath: '$(publishProfile.secureFilePath)'
-        DockerNamespace: '$(containerRegistry)'
-        DockerRepository: '$(imageRepository)'
-        DockerImageTag: '$(tag)'
-        PublishProfilePassword: '$(publishProfile.password)'
+        AppType: 'webAppContainer'
+        ImageName: '$(containerRegistry)/$(imageRepository):$(tag)'
