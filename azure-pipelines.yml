@@ -4,7 +4,8 @@ trigger:
       - main
 
 variables:
-  vmImageName: 'ubuntu-latest'
+  buildVmImageName: 'ubuntu-latest'
+  deployVmImageName: 'windows-latest'
   packageName: 'whistlecare.zip'
 
 stages:
@@ -14,7 +15,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      vmImage: $(buildVmImageName)
     steps:
     - checkout: self
 
@@ -46,7 +47,7 @@ stages:
   - job: Deploy
     displayName: Deploy to Azure
     pool:
-      vmImage: $(vmImageName)
+      vmImage: $(deployVmImageName)
     steps:
     - download: current
       artifact: drop
