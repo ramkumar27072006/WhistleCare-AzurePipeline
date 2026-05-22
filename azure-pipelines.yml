@@ -62,4 +62,5 @@ stages:
       inputs:
         ConnectionType: 'PublishProfile'
         PublishProfilePath: '$(publishProfile.secureFilePath)'
+        PublishProfilePassword: '$(PublishProfilePassword)'
         Package: '$(Pipeline.Workspace)/drop/$(packageName)'
