@@ -6,7 +6,6 @@ trigger:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'WhistleCare-ACR'
-  azureSubscription: 'WhistleCare-ARM'
   webAppName: 'whistlecare-webapp'
   imageRepository: 'whistlecareapp'
   containerRegistry: 'whistlecarecr.azurecr.io'
@@ -46,9 +45,17 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: AzureWebAppContainer@1
+    - task: DownloadSecureFile@1
+      name: publishProfile
+      displayName: 'Download Publish Profile'
+      inputs:
+        secureFile: 'publishprofile.pubxml'
+
+    - task: AzureRmWebAppDeployment@4
       displayName: 'Deploy Web App'
       inputs:
-        azureSubscription: '$(azureSubscription)'
-        appName: '$(webAppName)'
-        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
+        ConnectionType: 'PublishProfile'
+        PublishProfilePath: '$(publishProfile.secureFilePath)'
+        AppType: 'webAppContainer'
+        ImageName: '$(containerRegistry)/$(imageRepository):$(tag)'
+s
