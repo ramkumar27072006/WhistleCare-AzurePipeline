@@ -9,16 +9,15 @@ variables:
   containerRegistry: 'whistlecarecr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
-  vmImageName: 'ubuntu-latest'
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Build and Push Docker Image
   jobs:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      vmImage: 'ubuntu-latest'
     steps:
     - checkout: self
 
@@ -32,30 +31,3 @@ stages:
         tags: |
           $(tag)
           latest
-
-- stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - job: Deploy
-    displayName: Deploy to Azure
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: DownloadSecureFile@1
-      name: publishProfile
-      displayName: Download Publish Profile
-      inputs:
-        secureFile: 'publishprofile.pubxml'
-
-    - task: AzureRmWebAppDeployment@4
-      displayName: Deploy Web App Container
-      inputs:
-        ConnectionType: 'PublishProfile'
-        PublishProfilePath: '$(publishProfile.secureFilePath)'
-        PublishProfilePassword: '$(PublishProfilePassword)'
-        AppType: 'webAppContainer'
-        DockerNamespace: '$(containerRegistry)'
-        DockerRepository: '$(imageRepository)'
-        DockerImageTag: '$(tag)'
