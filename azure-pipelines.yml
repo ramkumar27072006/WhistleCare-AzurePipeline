@@ -4,32 +4,39 @@ trigger:
       - main
 
 variables:
-  dockerRegistryServiceConnection: 'WhistleCare-ACR'
-  imageRepository: 'whistlecareapp'
-  containerRegistry: 'whistlecarecr.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: '$(Build.BuildId)'
   vmImageName: 'ubuntu-latest'
+  packageName: 'whistlecare.zip'
 
 stages:
 - stage: Build
-  displayName: Build and push stage
+  displayName: Build package
   jobs:
   - job: Build
     displayName: Build
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
+    - checkout: self
+
+    - task: NodeTool@0
+      displayName: Use Node.js 18
       inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          latest
+        versionSpec: '18.x'
+
+    - script: npm install --production
+      displayName: Install production dependencies
+
+    - task: ArchiveFiles@2
+      displayName: Create deployment package
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(packageName)'
+        replaceExistingArchive: true
+
+    - publish: '$(Build.ArtifactStagingDirectory)/$(packageName)'
+      artifact: drop
 
 - stage: Deploy
   displayName: Deploy stage
@@ -41,17 +48,18 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - download: current
+      artifact: drop
+
     - task: DownloadSecureFile@1
       name: publishProfile
       displayName: Download Publish Profile
       inputs:
-        secureFile: publishprofile.pubxml
+        secureFile: 'publishprofile.pubxml'
 
     - task: AzureRmWebAppDeployment@4
       displayName: Deploy Web App
       inputs:
-        ConnectionType: PublishProfile
-        PublishProfilePath: $(publishProfile.secureFilePath)
-        PublishProfilePassword: $(PublishProfilePassword)
-        AppType: webAppContainer
-        ImageName: $(containerRegistry)/$(imageRepository):$(tag)
+        ConnectionType: 'PublishProfile'
+        PublishProfilePath: '$(publishProfile.secureFilePath)'
+        Package: '$(Pipeline.Workspace)/drop/$(packageName)'
