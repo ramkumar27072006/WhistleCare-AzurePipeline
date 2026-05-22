@@ -46,17 +46,9 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - task: DownloadSecureFile@1
-      name: publishProfile
-      displayName: 'Download Publish Profile'
+    - task: AzureWebAppContainer@1
+      displayName: 'Deploy Web App'
       inputs:
-        secureFile: 'publishprofile.pubxml'
-
-    - task: AzureRmWebAppDeployment@4
-  displayName: 'Deploy Web App'
-  inputs:
-    ConnectionType: 'PublishProfile'
-    PublishProfilePath: '$(publishProfile.secureFilePath)'
-    PublishProfilePassword: '$(PublishProfilePassword)' # Ensure this line is present
-    AppType: 'webAppContainer'
-    ImageName: '$(containerRegistry)/$(imageRepository):$(tag)'
+        azureSubscription: '$(azureSubscription)'
+        appName: '$(webAppName)'
+        containers: '$(containerRegistry)/$(imageRepository):$(tag)'
