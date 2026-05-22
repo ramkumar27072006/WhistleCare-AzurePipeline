@@ -52,5 +52,6 @@ stages:
       inputs:
         ConnectionType: PublishProfile
         PublishProfilePath: $(publishProfile.secureFilePath)
+        PublishProfilePassword: $(PublishProfilePassword)
         AppType: webAppContainer
         ImageName: $(containerRegistry)/$(imageRepository):$(tag)
