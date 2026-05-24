@@ -1,7 +1,223 @@
 /* ============================================================
-   HEALTHPULSE DASHBOARD LAYOUTS
-   Grid systems for each module page
+   dashboard.css - Layout and Cards
    ============================================================ */
+
+.dashboard-content {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-titles h1 {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+  font-weight: 700;
+  color: var(--color-accent-teal);
+  letter-spacing: -0.5px;
+}
+
+.header-titles p {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-bg-glass);
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.avatar {
+  background: var(--color-accent-teal);
+  color: var(--color-text-inverse);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  border-color: var(--color-accent-teal);
+}
+
+.stat-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-details h3 {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-change {
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-change.positive { color: #00ffcc; }
+.stat-change.negative { color: #ff4d4d; }
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.main-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header h2 i {
+  color: var(--color-accent-teal);
+}
+
+.card-body {
+  padding: 24px;
+  flex: 1;
+}
+
+.chart-container {
+  height: 300px;
+  position: relative;
+}
+
+.activity-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.activity-item {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed var(--color-border-subtle);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.activity-icon.critical { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; }
+.activity-icon.warning { background: rgba(255, 153, 0, 0.2); color: #ff9900; }
+.activity-icon.success { background: rgba(0, 255, 204, 0.2); color: #00ffcc; }
+.activity-icon.info { background: rgba(255, 204, 0, 0.2); color: #ffcc00; }
+
+.activity-text p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.activity-text span {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
 
 /* --- Sidebar Navigation --- */
 .sidebar-brand {
